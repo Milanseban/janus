@@ -1,0 +1,11 @@
+# Virtual Environment
+.venv/
+env/
+
+# IDE and OS files
+.idea/
+__pycache__/
+.DS_Store
+
+# Model files (too large for GitHub)
+models/
