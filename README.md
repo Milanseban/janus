@@ -3,21 +3,32 @@
 Janus is a private, locally-run AI assistant capable of having intelligent, contextual conversations about your documents. This project implements a complete Retrieval-Augmented Generation (RAG) pipeline from the ground up, demonstrating a robust and practical application of modern AI engineering principles.
 
 ---
-## Overview
+## Why Janus is Private & Secure
 
-The primary goal of this project is to create a secure and reliable tool for document analysis. By leveraging a local Large Language Model (LLM) and a vector database, Janus can ingest, understand, and answer questions about PDF documents without any data ever leaving the user's machine. The system is designed with conversational memory, allowing for natural, follow-up questions that build upon the previous context.
+This application is designed with privacy as a core feature. All components run locally on your machine, ensuring your documents and conversations are never exposed to external services.
+* **Local Compute**: All processing, from document ingestion to LLM inference, happens on your own hardware.
+* **No API Keys**: Janus uses a local, quantized GGUF model and open-source embedding models, requiring no external API keys or paid services.
+* **Offline Functionality**: Once the models are downloaded, the entire system can run without an internet connection.
+
+---
+## How It Works: The RAG Pipeline
+
+Janus uses a Retrieval-Augmented Generation (RAG) architecture to provide accurate, context-aware answers. The process can be broken down into five steps:
+
+1.  **Ingest PDFs**: The `ingest.py` script loads PDF documents from the `documents/` folder.
+2.  **Chunk**: The text is divided into smaller, semantically coherent chunks.
+3.  **Embed**: Each chunk is converted into a numerical vector (embedding) using a local Sentence-Transformers model.
+4.  **Store**: The embeddings are stored in a local FAISS vector database, creating a searchable knowledge base.
+5.  **Retrieve & Generate**: When you ask a question, the system retrieves the most relevant chunks from the database and feeds them, along with your conversation history, to the local LLM to generate a final, synthesized answer.
 
 ---
 ## Key Features
 
-* **100% Private**: All document processing and language model inference occur locally. Your documents and conversations are never exposed to external services.
-* **Conversational Memory**: The system maintains the context of the conversation, enabling it to understand and accurately answer follow-up questions.
-* **Local LLM Deployment**: Powered by a quantized Mistral-7B GGUF model running efficiently on a CPU via the `ctransformers` library.
-* **End-to-End RAG Pipeline**: Implements the full lifecycle of a RAG system:
-    * **Ingestion**: Loads and parses PDF documents.
-    * **Indexing**: Chunks text, creates embeddings, and stores them in a FAISS vector store.
-    * **Retrieval & Generation**: Retrieves relevant context and synthesizes factual, grounded answers.
-* **Polished Command-Line Interface**: A professional and user-friendly CLI built with the `rich` library provides a clean and interactive user experience.
+* **100% Private**: Runs entirely offline on your local machine.
+* **Conversational Memory**: Remembers the context of the chat for natural follow-up questions.
+* **Local LLM Deployment**: Powered by a quantized Mistral-7B GGUF model.
+* **End-to-End RAG Pipeline**: Implements the full ingestion and retrieval workflow.
+* **Polished CLI**: A professional and user-friendly command-line interface.
 
 ---
 ## How to Run
