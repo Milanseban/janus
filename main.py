@@ -1,3 +1,4 @@
+import os
 from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_community.vectorstores import FAISS
 from ctransformers import AutoModelForCausalLM
@@ -77,6 +78,24 @@ def main():
     """Main function for the interactive chatbot."""
     console = Console()
 
+    # --- New Guardrails ---
+    if not os.path.exists(MODEL_PATH):
+        console.print(Panel(
+            f"[bold red]Error: Model file not found![/bold red]\n\nThe file '[bold cyan]{MODEL_PATH}[/bold cyan]' does not exist.\nPlease download the required model and place it in the 'models' folder.",
+            title="[bold red]Setup Error[/bold red]",
+            border_style="red"
+        ))
+        return # Exit the script if the model is missing
+
+    if not os.path.exists(VECTORSTORE_PATH) or not os.listdir(VECTORSTORE_PATH):
+        console.print(Panel(
+            f"[bold red]Error: Vector store not found![/bold red]\n\nThe '{VECTORSTORE_PATH}' folder is empty or does not exist.\nPlease run the [bold cyan]ingest.py[/bold cyan] script first to build the knowledge base.",
+            title="[bold red]Setup Error[/bold red]",
+            border_style="red"
+        ))
+        return # Exit the script if the vector store is missing
+    # --- End of Guardrails ---
+
     console.print("Loading vector store...", style="bold yellow")
     embeddings = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
     vectorstore = FAISS.load_local(VECTORSTORE_PATH, embeddings, allow_dangerous_deserialization=True)
@@ -113,7 +132,6 @@ def main():
             console.print("[bold yellow]Exiting Janus. Goodbye![/bold yellow]")
             break
 
-        # --- This is the key change: Add the status indicator ---
         with console.status("[bold yellow]Janus is thinking...[/bold yellow]", spinner="dots"):
             # Generate the standalone question
             standalone_question = standalone_question_chain["standalone_question"].invoke({"question": question})
