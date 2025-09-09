@@ -30,7 +30,7 @@ The primary goal of this project is to create a secure and reliable tool for doc
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/Milanseban/janus.git](https://github.com/YOUR_USERNAME/janus.git)
+    git clone [https://github.com/Milanseban/janus.git](https://github.com/Milanseban/janus.git)
     cd janus
     ```
 2.  **Create and activate a virtual environment:**
